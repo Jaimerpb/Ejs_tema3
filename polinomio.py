@@ -88,4 +88,65 @@ class Polinomio(object):
             pol1 = pol1.sig
         return paux
     
-    
+    def dividir(polinomio1, polinomio2):
+        paux = Polinomio()
+        pol1 = polinomio1.termino_mayor
+        while(pol1 is not None): 
+            pol2 = polinomio2.termino_mayor
+            while(pol2 is not None):
+                termino = pol1.info.termino - pol2.info.termino
+                valor = pol1.info.valor / pol2.info.valor
+                if(Polinomio.obtener_valor(paux, termino) != 0):
+                    valor += Polinomio.obtener_valor(paux, termino)
+                    Polinomio.modificar_termino(paux, termino, valor)
+                else:
+                    Polinomio.agregar_termino(paux,termino,valor)
+                pol2 = pol2.sig
+            pol1 = pol1.sig
+        return paux
+
+    def eliminar(polinomio, termino):
+        aux = polinomio.termino_mayor
+        if (aux is not None):
+            if (aux.info.termino == termino):
+                polinomio.termino_mayor = aux.sig
+                aux.sig = None
+            else:
+                while(aux.sig is not None and aux.sig.info.termino != termino):
+                    aux = aux.sig
+                if (aux.sig is not None and aux.sig.info.termino == termino):
+                    aux.sig = aux.sig.sig
+
+    def existe_termino(polinomio, termino):
+        aux = polinomio.termino_mayor
+        while(aux is not None and aux.info.termino != termino):
+            aux = aux.sig
+        if (aux is not None and aux.info.termino == termino):
+            return True
+        else:
+            return False
+def main():
+    polinomio1 = Polinomio()
+    Polinomio.agregar_termino(polinomio1, 4, 2)
+    Polinomio.agregar_termino(polinomio1, 3, 3)
+    Polinomio.agregar_termino(polinomio1, 2, 4)
+    Polinomio.agregar_termino(polinomio1, 1, 5)
+    Polinomio.agregar_termino(polinomio1, 0, 6)
+    print(Polinomio.mostrar(polinomio1))
+    polinomio2 = Polinomio()
+    Polinomio.agregar_termino(polinomio2, 3, 1)
+    Polinomio.agregar_termino(polinomio2, 2, 2)
+    Polinomio.agregar_termino(polinomio2, 1, 3)
+    Polinomio.agregar_termino(polinomio2, 0, 4)
+    print(Polinomio.mostrar(polinomio2))
+    polinomio3 = Polinomio.sumar(polinomio1, polinomio2)
+    print(Polinomio.mostrar(polinomio3))
+    polinomio4 = Polinomio.restar(polinomio1, polinomio2)
+    print(Polinomio.mostrar(polinomio4))
+    polinomio5 = Polinomio.multiplicar(polinomio1, polinomio2)
+    print(Polinomio.mostrar(polinomio5))
+    polinomio6 = Polinomio.dividir(polinomio1, polinomio2)
+    print(Polinomio.mostrar(polinomio6))
+
+if __name__ == "__main__":
+    main()
